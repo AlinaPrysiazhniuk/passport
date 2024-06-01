@@ -25,13 +25,19 @@ app.get("/", (req, res) => {
 });
 
 app.get("/protected", isLoggedIn, (req, res) => {
-  res.send(`<a href="https://www.google.com.ua/?hl=uk">Goggle</a>`);
+  res.send(`<a href="/logout">Logout</a>`);
 });
 
 app.get(
   "/google",
   passport.authenticate("google", { scope: ["email", "profile"] })
 );
+
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.send("Good bye");
+  });
+});
 
 app.get("/google/failure", (req, res) => {
   res.send("Failed login with goggle");
